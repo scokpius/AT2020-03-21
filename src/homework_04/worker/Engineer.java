@@ -67,6 +67,7 @@ public abstract class Engineer extends Person implements InventableCode {
         }
 
     }
+
     public Result executeTest(Test test){
      return test.apply(this);
     }

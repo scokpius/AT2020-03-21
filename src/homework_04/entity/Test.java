@@ -15,11 +15,7 @@ public class Test implements Function<Engineer, Result> {
         this.complexity = testLevel.COMPLEXITY;
     }
 
-    public int getInstability() {
-        return instability;
-    }
-
-    public void setInstability(int instability) {
+      void setInstability(int instability) {
         this.instability = instability;
     }
 
