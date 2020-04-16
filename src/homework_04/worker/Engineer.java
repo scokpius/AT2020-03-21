@@ -11,15 +11,27 @@ public abstract class Engineer extends Person implements InventableCode {
 
     private int anxiety = 3;
 
+    public int getSkill() {
+        return skill;
+    }
+
+    private void setSkill() {
+        this.skill = (int) (Math.random()*10)+1;
+    }
 
     public int getAnxiety() {
         return anxiety;
     }
+
+    public void setSkill(int skill) {
+        this.skill = skill;
+    }
+
     Engineer(int age, String name, String surName) {
         super(age, name, surName);
-        this.skill = (int) (Math.random()*10)+1;
+        setSkill();
         System.out.printf("My name is %s.\nI am %d. I have %d skills.\n", name + " " + surName, age, this.skill);
-       }
+    }
 
     @Override
     public int inventRowsCode() {
