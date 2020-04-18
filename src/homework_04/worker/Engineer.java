@@ -55,7 +55,7 @@ public abstract class Engineer extends Person implements InventableCode {
                             }
                             System.out.printf("Test № %d result %s.\n", i, str);
                             break;
-                } 
+                }
                 case 2: { Result result = executeTest(new AutomatedTest(TestLevel.API, 3));
                             if (result == Result.FAILED) { str = "FAILED";
                             }
