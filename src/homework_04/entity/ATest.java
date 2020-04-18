@@ -6,18 +6,21 @@ import homework_04.worker.AutomationEngineer;
 import homework_04.worker.Engineer;
 import homework_04.worker.TestEngineer;
 
-public abstract class Test implements Function<Engineer, Result> {
+public abstract class ATest implements Function<Engineer, Result> {
     private int complexity;
 
     private int instability;
 
-    Test(TestLevel testLevel, int instability) {
+    ATest(TestLevel testLevel, int instability) {
         this.complexity = testLevel.COMPLEXITY;
         if (instability == 0) this.instability = 1;
         else if (instability > 10) this.instability = 10;
         else this.instability = instability;
     }
 
+    public int getInstability() {
+        return instability;
+    }
 
     @Override
     public Result apply(Engineer engineer) {
