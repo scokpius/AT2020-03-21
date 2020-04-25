@@ -20,14 +20,14 @@ import static homework_04.entity.Result.FAILED;
 import static homework_04.entity.Result.PASSED;
 
 @RunWith(Parameterized.class)
-public class Test2 {
+public class ExecuteTest {
     private static final String MSG = "Test execution for %s by %s Anxiety %s is not correct!";
     private Engineer engineer;
     private ATest test;
     private int skill;
     private Result result;
 
-    public Test2(Engineer engineer, int skill, ATest test,  Result result) {
+    public ExecuteTest(Engineer engineer, int skill, ATest test, Result result) {
         this.engineer = engineer;
         this.test = test;
         this.skill = skill;
@@ -37,14 +37,28 @@ public class Test2 {
     @Parameterized.Parameters
     public static Collection<Object[]> primeNumbers(){
         return Arrays.asList(new Object[][] {
-                {new TestEngineer(), 1, new ManualTest(TestLevel.UNIT,5), PASSED},
-                {new TestEngineer(), 10, new AutomatedTest(TestLevel.UNIT,5), PASSED},
-                {new AutomationEngineer(), 10, new ManualTest(TestLevel.UNIT, 5),PASSED},
-                {new AutomationEngineer(), 10, new AutomatedTest(TestLevel.UNIT, 5), PASSED}});
+                {new TestEngineer(), 1, new AutomatedTest(TestLevel.UNIT, 1), PASSED},
+                {new AutomationEngineer(), 10, new AutomatedTest(TestLevel.GUI, 0), PASSED},
+                {new TestEngineer(), 1, new ManualTest(TestLevel.API, 0), PASSED},
+                {new AutomationEngineer(), 10, new ManualTest(TestLevel.UNIT, 0), PASSED},
+                {new TestEngineer(), 10, new ManualTest(TestLevel.UNIT, 10), PASSED},
+                {new TestEngineer(), 10, new AutomatedTest(TestLevel.API, 11), PASSED},
+                {new TestEngineer(), 1, new AutomatedTest(TestLevel.GUI, 10), FAILED},
+                {new TestEngineer(), 1, new ManualTest(TestLevel.GUI, 11), FAILED},
+                {new TestEngineer(), 1, new AutomatedTest(TestLevel.API, 0), PASSED},
+                {new AutomationEngineer(), 1, new AutomatedTest(TestLevel.UNIT, 11), PASSED},
+                {new AutomationEngineer(), 10, new AutomatedTest(TestLevel.API, 1), PASSED},
+                {new AutomationEngineer(), 1, new ManualTest(TestLevel.API, 10), FAILED},
+                {new AutomationEngineer(), 10, new ManualTest(TestLevel.GUI, 11), PASSED},
+                {new AutomationEngineer(), 1, new ManualTest(TestLevel.GUI, 1), PASSED},
+                {new TestEngineer(), 10, new ManualTest(TestLevel.API, 1), PASSED},
+                {new AutomationEngineer(), 10, new AutomatedTest(TestLevel.API, 10), PASSED},
+        });
     }
 
     @Test
     public void verifyExecuteTest () {
+        engineer.setSkill(skill);
         Assert.assertEquals(String.format(MSG, test.getClass().getSimpleName(),
                 engineer.getClass().getSimpleName(), engineer.getAnxiety()),
                 result, engineer.executeTest(test));

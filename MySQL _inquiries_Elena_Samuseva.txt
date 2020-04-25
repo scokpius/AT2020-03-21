@@ -1,0 +1,221 @@
+1. Выбрать все строки из таблицы c перевозчиками.
+select * from Shippers;
+
+2. Выбрать первые 3 строки из таблицы c сотрудниками.
+select * from Employees limit 3;
+
+3. Из таблицы сотрудников выбрать все имена, фамилии, дни 
+рождения в следующем порядке: BirthDate, FirstName, LastName,
+количество строк в выборке ограничить 3-мя.
+select BirthDate, FirstName, LastName from Employees limit 3;
+
+4. Выбрать имена и фамлии сотрудников, родившихся в 1958 году.
+select FirstName, LastName from Employees 
+where BirthDate like '1958%';
+
+5. Выбрать все товары с ценой от 23 до 25.
+select * from Products 
+where Price between 23 and 25;
+
+6. Найти товары с минимальной ценой.
+select * from Products
+where Price = (select min(Price) from Products);
+
+7. Найти товары с максимальной ценой. 
+select * from Products 
+where Price = (select max(Price) from Products);
+
+8. Выбрать все товары, у которых Unit '10 pkgs.'.
+select * from Products
+where Unit like '10 pkgs.';
+
+9. Выбрать адреса поставщиков, которые проживают в одном из
+городов: Tokyo, Frankfurt, Osaka. 
+select Address from Suppliers
+where City in ('Tokyo', 'Frankfurt', 'Osaka');
+
+10. Выбрать название товаров начинающихся с буквы “G”, у которых
+цена больше 37.
+select ProductName from Products
+where Price > 37 and ProductName like 'G%';
+
+11. Вывести список стран начинающихся на S и состоящих из 5 букв,
+из которых есть поставщики. 
+select Country from Suppliers
+where Country like 'S%' and length(Country)=5;
+
+12. Вывести сумму всех товаров, в названии которых содержится
+”od”, столбец назвать Summ.
+select sum(Price) as 'Summ' from Products
+where ProductName like '%od%';
+
+13. Вывести среднюю стоимость товаров, поставляемых в бутылках,
+округлив до 2-х знаков после запятой, столбец назвать Summ. 
+select round(sum(Price)/count(Unit), 2) as 'Summ' from Products
+where Unit like '%bottle%';
+
+14. Найти количество клиентов, которые НЕ проживают в Франции и
+Германии, столбец назвать Countt.
+select count(Country) as 'Countt' from Customers
+where Country not in ('France', 'Germany');
+
+15. Вывести имена сотрудников, родившихся после 01.01.1968 года.
+Отсортировать результат по имени. 
+select FirstName from Employees
+where BirthDate >= '1968%'
+order by FirstName;
+
+16. Выбрать названия товаров, у которых Price = 13 или 15 и
+отсортировать по возрастанию, использовать Select команды с
+объединением результатов через UNION.
+select ProductName from Products 
+where Price = 13
+union
+select ProductName from Products 
+where Price = 15;
+
+17. Показать имена товаров, в названии которых третяя буква m и
+названия их поставщиков.
+select ProductName, SupplierName from Products
+join Suppliers on Products.SupplierID = Suppliers.SupplierID
+where ProductName regexp '^..m'; 
+
+или 
+where ProductName rlike '^..m'; 
+
+18. Показать имена и фамилии сотрудника, который оформил заказ
+1996-11-27 (написать запрос двумя способами: через INNER Join, и
+используя подзапрос).
+select FirstName, LastName from Employees
+inner join Orders on Employees.EmployeeID = Orders.EmployeeID
+where OrderDate = '1996-11-27';
+и 
+select FirstName, LastName from Employees
+where EmployeeID in (select EmployeeID from Orders
+where OrderDate = '1996-11-27'); 
+
+19. Выбрать все товары, у которых поставщик «Grandma Kelly's
+Homestead» и цена > 27. В результате вывести 3 колонки: Product,
+Supplier, Price.
+select ProductName as 'Product', SupplierName as 'Supplier', Price from Products
+join Suppliers on Products.SupplierID = Suppliers.SupplierID
+where SupplierName like "Grandma Kelly's Homestead" and Price>27; 
+
+или 
+where SupplierName like 'Grandma Kelly_s Homestead' and Price>27;
+
+20. Вывести суммарное количество продукта 'Queso Cabrales'
+(столбец обозвать Summ), отправленного всем покупателям.
+select sum(Quantity) as 'Summ' from OrderDetails
+where ProductID in (select ProductID from Products
+where ProductName = 'Queso Cabrales');
+
+21. Показать все заказы, которые были отправлены по адресу
+«Ekergatan 24» с их заказчиками и сотрудниками. В результате вывести 3
+колонки – ID заказа, имя заказчика, имя сотрудника, фамилия
+сотрудника.
+select OrderID, CustomerName, FirstName, LastName from Orders 
+join Customers on Orders.CustomerID = Customers.CustomerID
+join Employees on Orders.EmployeeID = Employees.EmployeeID
+where Address = 'Ekergatan 24';
+
+22. Преобразовать предыдущий запрос таким образом, чтобы те же
+данные выводились в 3-х колонках – объединить LastName и FirstName из
+Employees в одну колонку через пробел и назвать ее EmployeeName (2
+LEFT JOINS). 
+select OrderID, CustomerName, concat(FirstName, ' ', LastName) as 'EmployeeName' from Orders 
+join Customers on Orders.CustomerID = Customers.CustomerID
+join Employees on Orders.EmployeeID = Employees.EmployeeID
+where Address = 'Ekergatan 24';
+
+23. Показать все продукты, содержащиеся в заказах 1997-го года и в
+названии которых менее 5 букв. В результате вывести OrderID,
+OrderDate, ProductName.
+select od.OrderID, OrderDate, ProductName from Orders o
+join OrderDetails od on o.OrderID = od.OrderID
+join Products p on od.ProductID = p.ProductID
+where OrderDate like '1997%' and p.ProductName rlike '^....$';
+
+или 
+where OrderDate like '1997%' and p.ProductName rlike '^.{4}$';
+
+24.  Показать названия продуктов и их категорий, которые
+используются в заказах от заказчика по имени Blondel père et fils и
+категории которых состоят как минимум из 2-х слов.
+select ProductName, CategoryName from Products p
+join Categories c on p.CategoryID = c.CategoryID
+where ProductID in (select ProductID from OrderDetails
+where OrderID in (select OrderID from Orders
+where CustomerID in(select CustomerID from Customers 
+where CustomerName = "Blondel pere et fils")))
+and c.CategoryName rlike "[A-Za-z]+[ ][A-Za-z]+";
+
+или (на мой взгляд так правильнее !!! )
+and c.CategoryName rlike "[A-Za-z]+[\/ ][A-Za-z]+";
+
+25.  Вывести количество заказчиков (колонку назвать Buyers), 
+которые заказали один из продуктов: «Queso Cabrales», 
+«Gustaf's Knäckebröd», «Louisiana Fiery Hot Pepper Sauce», 
+«Schoggi Schokolade», «Gnocchi di nonna Alice».
+select count(CustomerID) as 'Buyers' from Customers
+where CustomerID in (select CustomerID from Orders
+where OrderID in (select OrderID from OrderDetails
+where ProductID in (select ProductID from Products
+where ProductName in ("Queso Cabrales", "Gustaf's Knäckebröd",
+"Louisiana Fiery Hot Pepper Sauce", "Schoggi Schokolade", 
+"Gnocchi di nonna Alice"))));  
+
+26.  Найти города в которые было отправлено больше всего заказов, 
+вывести назание города и количество заказов (колонку назвать Amount).
+select City, count(City) as Amount from Customers c
+join Orders o on c.CustomerID = o.CustomerID
+group by City
+order by Amount desc limit 1;
+
+27.  *Найти из какого города было поставлено наибольшее количество единиц
+товаров в Лондон, вывести название города и количество единиц (колонку 
+назвать Amount).
+select s.City, sum(od.Quantity) as Amount from Suppliers s
+join Products p on s.SupplierID = p.SupplierID
+join OrderDetails od on p.ProductID = od.ProductID
+join Orders o on o.OrderID = od.OrderID
+where CustomerID in (select CustomerID from Customers c where c.City = 'London')
+group by s.City
+having Amount = (select max(maxTable.Amount) from (
+select sum(od.Quantity) as Amount from Suppliers s
+join Products p on s.SupplierID = p.SupplierID
+join OrderDetails od on p.ProductID = od.ProductID
+join Orders o on o.OrderID = od.OrderID
+where CustomerID in (select CustomerID from Customers c where c.City = 'London')
+group by s.City) maxTable);
+
+28.  *Найти перевозчиков, которые перевезли более 30 разнообразных напитков
+(Beverages), вывести имена перевозчиков, категорию товара и количество
+ перевезенных видов товара (колонку назвать Amount).
+select ShipperName, CategoryName, count(ProductName) as 'Amount' from Categories c
+join Products p on c.CategoryID = p.CategoryID
+join OrderDetails od on p.ProductID = od.ProductID
+join Orders o on od.OrderID = o.OrderID
+join Shippers sh on o.ShipperID = sh.ShipperID
+where CategoryName = 'Beverages'
+group by ShipperName
+having Amount>30;
+
+29.  *Найти среднюю стоимость приправ (Condiments) отправленных в штаты, 
+заказы на которые оформлены Margaret Peacock, вывести стоимость округленную 
+до 2-х знаков после запятой (колонку назвать Average).
+select round(avg(Price), 2) as Averare from Products
+where CategoryID in (select CategoryID from Categories
+where CategoryName = 'Condiments') and  
+ProductID in (select ProductID from OrderDetails
+where OrderID in (select OrderID from Orders
+where CustomerID in (select CustomerID from Customers 
+where Country = 'USA') and EmployeeID in (select EmployeeID from Employees 
+where FirstName = 'Margaret' and LastName = 'Peacock'))); 
+
+
+
+
+
+
+
