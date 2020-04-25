@@ -26,7 +26,7 @@ public class test1 {
     public static Collection<Object[]> primeNumbers(){
         return Arrays.asList(new Object[][] {{new TestEngineer()},{new AutomationEngineer()}});
     }
-    
+
 //    private static final String MSG = "Test execution for %s by %s Anxiety %s is not correct!";
 //    private Engineer testEngineer = new TestEngineer();
 //    private Engineer automationEngineer = new AutomationEngineer();
