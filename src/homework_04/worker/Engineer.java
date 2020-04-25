@@ -80,7 +80,7 @@ public abstract class Engineer extends Person implements InventableCode {
 
     }
 
-    public Result executeTest(Test test){
+    public Result executeTest(ATest test){
      return test.apply(this);
     }
 }
