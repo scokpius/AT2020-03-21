@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title> My first page </title>	
+		<link href="style.css" rel="stylesheet">
+		<script type="text/javascript" src="myscript.js"></script>
+		
+		<style>
+			.round {
+			
+					border-radius: 200px; /* Радиус скругления */
+					border: 3px solid green; /* Параметры рамки */
+				}
+		</style>
+	</head>
+	<body>
+		<H1 align="center"> Elena Samuseva </H1> 
+		<br>
+	  		<p align="center">
+			<img src="pic.jpg"  height=30% class="round"  border="5">
+			</p>
+		</br>
+		<p align="center" style="color:F5F92A">
+			<big>
+				<b>
+					 This is my first page!
+				</b>
+			</big>
+		</p>		
+		<table align="center" border="1">
+			<tr>
+				<td>Location</td>
+				<td>Minsk</td>
+				
+	   		</tr>
+			<tr>
+				<td>Place of study</td>
+				<td>it-academy</td>
+	   		</tr>
+		</table>
+		<p align="center">
+			<a href="1.html"> Link to 1.html </a>
+		</p>
+		<p align="center">
+			<input id="elem" type="button" onclick="goBack()" value="Go Back">
+		
+		</p>
+		<script>
+				function goBack(){
+				window.history.back();
+				}
+		</script>
+
+	</body>
+</html>
